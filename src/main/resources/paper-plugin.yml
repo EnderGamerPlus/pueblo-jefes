@@ -1,0 +1,8 @@
+name: pueblojefes
+version: '${project.version}'
+description: Jefes con fases y ataques anunciados (estilo Dark Souls) para Pueblo Extremo.
+author: putindeer
+
+main: me.putindeer.pueblojefes.PuebloJefes
+api-version: '26.2'
+load: POSTWORLD

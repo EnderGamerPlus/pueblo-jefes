@@ -1,0 +1,90 @@
+# =====================================================================
+#  PUEBLO JEFES - jefes con fases y ataques anunciados
+# =====================================================================
+# Comandos (permiso pueblojefes.admin):
+#   /jefes invocar [jefe]     aviso y, después, aparece el jefe en la arena
+#   /jefes parar              retira al jefe
+#   /jefes lista              jefes disponibles
+#   /jefes loot agregar <peso> [min] [max] | lista | quitar <n>
+#                             botín extra (el ítem que tienes en la mano)
+#   /jefes recargar           recarga este archivo
+#
+# Para que salga solo cada semana, usa el horario de Pueblo Eventos
+# (weekly.commands -> "jefes invocar").
+# Textos en formato MiniMessage.
+# =====================================================================
+
+prefix: "<dark_gray>[<dark_red>Jefes</dark_red>]</dark_gray> "
+
+# Jefe que aparece con "/jefes invocar" sin indicar cuál.
+default-boss: guardian
+# Segundos de aviso antes de que aparezca.
+warning-seconds: 60
+# Tiempo máximo: si no lo matan, se retira.
+duration-seconds: 1200
+
+# Centro de la arena. Constrúyela aquí; el jefe no sale de su "arena-radius".
+arena:
+  world: world
+  x: 0
+  y: 80
+  z: 0
+
+# Su golpe normal no hace daño: solo pega con sus ataques anunciados (estilo Dark Souls).
+cancel-vanilla-attacks: true
+# Daño extra que recibe justo después de atacar (ventana para castigarlo).
+vulnerable-multiplier: 1.5
+xp: 500
+# Porcentaje mínimo de su vida que tienes que haberle quitado para recibir botín.
+min-damage-percent: 5
+
+# Botín para cada jugador que cumpla el mínimo ("MATERIAL peso cantidad").
+# Ítems especiales con /jefes loot agregar <peso> [min] [max].
+reward:
+  rolls-min: 4
+  rolls-max: 6
+  items:
+    - "NETHERITE_SCRAP 6 1-2"
+    - "DIAMOND 12 3-6"
+    - "ENCHANTED_GOLDEN_APPLE 3 1"
+    - "TOTEM_OF_UNDYING 3 1"
+    - "EXPERIENCE_BOTTLE 12 16-32"
+    - "EMERALD 12 8-16"
+  # Comandos de consola para cada jugador premiado (%player%). Ej: "moneda add %player% 64"
+  commands: []
+
+# Ajustes de cada jefe. Los jefes nuevos se programan en el plugin (paquete boss/bosses).
+bosses:
+  guardian:
+    name: "<dark_red><bold>El Guardián Caído</bold></dark_red>"
+    health: 600
+    # Tamaño (1.0 = normal).
+    scale: 2.0
+    # Fases: al bajar de estos porcentajes de vida pasa a la fase 2, 3... (ataca más rápido y suma ataques).
+    phase-thresholds: [0.6, 0.3]
+    arena-radius: 40
+    chase-speed: 1.1
+    # Ticks de descanso entre ataques (20 = 1 segundo).
+    time-between-attacks: 20
+    damage-multiplier: 1.0
+    # Esqueletos que invoca al entrar en la fase 3.
+    phase3-adds: 3
+    attacks:
+      slam-damage: 10
+      charge-damage: 12
+      fire-rain-damage: 8
+
+messages:
+  warning: "<dark_red>☠ <gray>La tierra tiembla... %boss% <gray>despierta en <white>%seconds%s</white>."
+  start-title: "%boss%"
+  start-subtitle: "<gray>El jefe ha despertado"
+  start: "<dark_red>☠ %boss% <gray>apareció en <white>%x%, %y%, %z%</white>. ¡Lee sus ataques y castígalo cuando falle!"
+  bossbar: "%boss% <gray>| Fase %phase%"
+  ranking-title: "<gold>☠ Mayor daño al jefe:"
+  ranking-line: "<yellow>%pos%. <white>%player%</white> <gray>(%percent%%)"
+  reward: "<green>☠ ¡Recibiste el botín del jefe!"
+  victory: "<gold>☠ ¡%boss% <gold>ha sido derrotado!"
+  retreat: "<gray>☠ %boss% <gray>se retira a las sombras..."
+  already-active: "<red>Ya hay un jefe activo. Usa /jefes parar primero."
+  unknown-boss: "<red>No existe el jefe '%boss%'. Jefes: %bosses%"
+  no-world: "<red>El mundo de la arena no existe (revisa arena.world)."
